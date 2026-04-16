@@ -1,0 +1,11 @@
+url: "git@github.com:DavidJohannesS/nvim.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: "nvim"
+        to: "~/.config/nvim"
+      - from: "nvim"
+        to: "/root/.config/nvim"

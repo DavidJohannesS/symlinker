@@ -1,0 +1,9 @@
+url: "git@github.com:DavidJohannesS/rofi.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: "rose-pine.rasi"
+        to: "~/.config/rofi/config.rasi"

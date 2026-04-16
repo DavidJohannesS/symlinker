@@ -1,0 +1,9 @@
+url: "git@github.com:DavidJohannesS/tmux.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: ".tmux.conf"
+        to: "~/.tmux.conf"

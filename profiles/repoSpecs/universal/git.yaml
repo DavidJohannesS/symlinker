@@ -1,0 +1,14 @@
+url: "git@github.com:DavidJohannesS/git.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: ".gitconfig"
+        to: "~/.gitconfig"
+      - from: ".gitconfig-home"
+        to: "~/.gitconfig-home"
+      - from: ".gitconfig-work"
+        to: "~/.gitconfig-work"
+

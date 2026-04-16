@@ -1,0 +1,9 @@
+url: "git@github.com:DavidJohannesS/dunst.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: "dunstrc"
+        to: "~/.config/dunst/dunstrc"

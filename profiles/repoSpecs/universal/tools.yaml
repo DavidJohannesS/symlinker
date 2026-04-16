@@ -1,0 +1,9 @@
+url: "git@github.com:DavidJohannesS/tools.git"
+remote: "origin"
+path: "gitrepos/.dotfiles"
+
+profiles:
+  default:
+    links:
+      - from: "tools"
+        to: "~/tools"

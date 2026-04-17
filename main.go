@@ -1,34 +1,45 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
-	"sync"
-	"flag"
-
 	"symlinker/config"
 	"symlinker/fs"
 	"symlinker/git"
+	"symlinker/bootstrap"
 	"symlinker/msg"
+	"sync"
 )
 func main() {
+	//  Define Flags
+	configDirFlag:= flag.String("config-dir", "~/.config/symlinker", "")
+	dryRun:= flag.Bool("dryRyn", false, "")
+	configSource := flag.String("config-repo", "git@github.com:DavidJohannesS/symlinkerConfig.git", "Git URL for bootstrapping config")
+	flag.Parse()
+
 	fmt.Println("Welcome to Dot File Manager reborne")
 	fmt.Println("Starting dotFM-reborne!...")
 	fmt.Println("---------------------------------")
-	configDir:= flag.String("config-dir", "~/.config/symlinker", "")
-	dryRun:= flag.Bool("dryRyn", false, "")
-	flag.Parse()
-	fmt.Println(*configDir)
+	bootstrap.InitConfig(*configDirFlag,*configSource)
+	fmt.Println(*configDirFlag)
+	configDir := fs.ExpandHome(*configDirFlag)
+
+
+	mainProfile := filepath.Join(configDir,"config.yaml")
+	repoSpecs := filepath.Join(configDir,"repoSpecs")
 	cfg, err := config.LoadConfig(
-		"profiles/config.yaml",
-		"profiles/repoSpecs",
+		mainProfile,
+		repoSpecs,
 	)
 	if err != nil {
 		panic(err)
 	}
+	
+	fmt.Println(cfg)
 	if *dryRun {
-		os.Exit(1)
+		os.Exit(100)
 	}
 
 	profileName := "desktop"

@@ -1,9 +1,0 @@
-url: "git@github.com:DavidJohannesS/picom.git"
-remote: "origin"
-path: "gitrepos/.dotfiles"
-
-profiles:
-  default:
-    links:
-      - from: "picom.conf"
-        to: "~/.config/picom/picom.conf"

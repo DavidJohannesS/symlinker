@@ -1,9 +1,5 @@
 *
-!config/
-!fs/
-!git/
-!msg/
-!profiles/
+!core
 !go.mod
 !main.go
 !go.sum

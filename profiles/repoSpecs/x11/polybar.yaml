@@ -1,9 +1,0 @@
-url: "git@github.com:DavidJohannesS/polybar.git"
-remote: "origin"
-path: "gitrepos/.dotfiles"
-
-profiles:
-  default:
-    links:
-      - from: "polybar"
-        to: "~/.config/polybar"

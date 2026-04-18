@@ -1,9 +1,0 @@
-url: "git@github.com:DavidJohannesS/i3.git"
-remote: "origin"
-path: "gitrepos/.dotfiles"
-
-profiles:
-  default:
-    links:
-      - from: "i3"
-        to: "~/.config/i3"

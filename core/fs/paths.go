@@ -1,7 +1,7 @@
 package fs
 
 import (
-	"symlinker/msg"
+	"symlinker/core/msg"
 	"os"
 	"path/filepath"
 	"strings"

@@ -1,9 +1,0 @@
-url: "git@github.com:DavidJohannesS/kitty.git"
-remote: "origin"
-path: "gitrepos/.dotfiles"
-
-profiles:
-  default:
-    links:
-      - from: "kitty"
-        to: "~/.config/kitty"

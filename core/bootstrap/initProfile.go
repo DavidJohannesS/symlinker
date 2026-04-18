@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"symlinker/fs"
-	"symlinker/git"
-	"symlinker/msg"
+	"symlinker/core/fs"
+	"symlinker/core/git"
+	"symlinker/core/msg"
 )
 
 func InitConfig(path string, repoURL string) {

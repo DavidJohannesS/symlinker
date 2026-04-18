@@ -37,11 +37,9 @@ func SymlinkStatus(src, dest string) (exists bool, correct bool, err error) {
     if err != nil {
         return false, false, err
     }
-    // Not a symlink → exists but wrong
     if info.Mode()&os.ModeSymlink == 0 {
         return true, false, nil
     }
-    // It's a symlink → check target
     target, err := os.Readlink(dest)
     if err != nil {
         return true, false, err
@@ -49,13 +47,13 @@ func SymlinkStatus(src, dest string) (exists bool, correct bool, err error) {
 
     return true, target == src, nil
 }
-func CreateSymlink(src, dest string) error {
+func CreateSymlink(src string, dest string,repoName string) error {
     exists, correct, err := SymlinkStatus(src, dest)
     if err != nil {
         return err
     }
     if exists && correct {
-        msg.Info("Symlink already exists: " + dest)
+        msg.Info("["+repoName+"] "+"Symlink already exists: " + dest)
         return nil
     }
     os.Remove(dest)

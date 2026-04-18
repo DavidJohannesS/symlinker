@@ -9,11 +9,10 @@ type Runner struct {
 
 func (r *Runner) Do(description string, action func() error) error {
     if r.IsVerbose || r.IsDryRun {
-        msg.Info("Action: " + description)
+        msg.Info(description)
     }
 
     if r.IsDryRun {
-        msg.Warn("-> Skipping (Dry Run)")
         return nil
     }
     return action()

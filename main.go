@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"symlinker/core/action"
 	"symlinker/core/bootstrap"
+	"symlinker/core/cmd"
 	"symlinker/core/config"
 	"symlinker/core/fs"
-	"symlinker/core/git"
 	"symlinker/core/msg"
 	"sync"
 )
@@ -55,46 +55,20 @@ func main() {
 		go func(name string, prof string) {
 			defer wg.Done()
 
-			repoCfg, ok := cfg.Repos[name]
-			if !ok {
-				errChan <- fmt.Sprintf("[%s] Repo configuration not found", name)
-				return
-			}
-
+			repoCfg, _ := cfg.Repos[name]
 			basePath := filepath.Join(home, repoCfg.Path)
-			clonePath := filepath.Join(basePath, name)
 
-			run.Do("Ensure directory: "+basePath, func() error {
-				return fs.EnsureDir(basePath)
-			})
-
-			if fs.Exists(clonePath) {
-				run.Do("Pulling repo: "+name, func() error {
-					return git.PullRepo(repoCfg.Remote, clonePath)
-				})
-			} else {
-				run.Do("Cloning repo: "+name, func() error {
-					return git.Clone(repoCfg.URL, repoCfg.Remote, clonePath)
-				})
-			}
-
-			repoProfileCfg, ok := repoCfg.Profiles[prof]
-			if !ok {
-				errChan <- fmt.Sprintf("[%s] Profile '%s' not found", name, prof)
+			clonePath, err := cmd.SyncRepo(run, name, repoCfg.Remote, repoCfg.URL, basePath)
+			if err != nil {
+				errChan <- fmt.Sprintf("[%s] Sync Error: %v", name, err)
 				return
 			}
 
-			for _, link := range repoProfileCfg.Links {
-				src := filepath.Join(clonePath, link.From)
-				dest := fs.ExpandHome(link.To)
+			repoProfileCfg, _ := repoCfg.Profiles[prof]
+			errs := cmd.LinkProfile(run, name, clonePath, repoProfileCfg.Links)
 
-				err := run.Do(fmt.Sprintf("[%s] Link %s -> %s", name, link.From, link.To), func() error {
-					return fs.CreateSymlink(src, dest)
-				})
-
-				if err != nil {
-					errChan <- fmt.Sprintf("[%s] Symlink Error (%s): %v", name, link.To, err)
-				}
+			for _, e := range errs {
+				errChan <- fmt.Sprintf("[%s] Link Error: %v", name, e)
 			}
 		}(repoName, repoProfile)
 	}

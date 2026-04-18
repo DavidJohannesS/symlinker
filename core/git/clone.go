@@ -17,7 +17,8 @@ func RepoNameFromURL(url string) string {
 }
 
 func Clone(url, remote, path string) error {
-	msg.Success("Cloning," + url + "into" + path)
+	repo := RepoNameFromURL(url)
+	msg.Success("["+repo+"] "+"Cloning," + url + "into" + path)
     auth, err := ssh.NewPublicKeysFromFile("git", os.Getenv("HOME")+"/.ssh/id_rsa", "")
     if err != nil {
         return err
@@ -29,7 +30,7 @@ func Clone(url, remote, path string) error {
     })
     return err
 }
-func PullRepo(remote, path string) error {
+func PullRepo(remote, path string,name string) error {
     repo, err := gogit.PlainOpen(path)
     if err != nil {
         return err
@@ -51,7 +52,7 @@ func PullRepo(remote, path string) error {
     })
 
     if err == gogit.NoErrAlreadyUpToDate {
-        msg.Info("Already up to date: " + path)
+        msg.Info("["+name+"] "+"Already up to date: " + path)
         return nil
     }
 
